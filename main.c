@@ -33,88 +33,10 @@
 /*
  *  ======== main_freertos.c ========
  */
-#include "msp.h"
-#include "msp432p401r.h"
-#include <stdint.h>
-#include <stdio.h>
+#include "main.h"
 
-/* RTOS header files */
-#include <FreeRTOS.h>
-#include <task.h>
-
-TaskHandle_t Task_Blink_LED1_Handle = NULL;
-TaskHandle_t Task_Blink_RGB_Blue_Handle = NULL;
-
-#define DELAY_MS 1000
-
-/* ****************************************************************************
- * This Function initializes the hardware required to blink LED1 on the
- * MSP432 Launchpad
- * ***************************************************************************/
-void blink_led1_hw_init(void)
-{
-    // set direction as an output
-    P1->DIR |= BIT0;
-
-    // Turn off LED
-    P1->OUT &= ~BIT0;
-}
-
-/******************************************************************************
-* Tasked used to blink LED1 on MSP432 Launchpad
-******************************************************************************/
-void Task_Blink_LED1(void *pvParameters)
-{
-    while(1)
-    {
-        // turn on the LED
-        P1->OUT |= BIT0;
-
-        // Delay
-        vTaskDelay(pdMS_TO_TICKS(DELAY_MS));
-
-        // turn off the LED
-        P1->OUT &= ~BIT0;
-
-        // Delay
-        vTaskDelay(pdMS_TO_TICKS(DELAY_MS));
-    }
-}
-
-
-/* ****************************************************************************
- * This Function initializes the hardware required to blink RGB blue on the
- * MSP432 Launchpad
- * ***************************************************************************/
-void blink_rgb_blue_hw_init(void)
-{
-    // set direction as an output
-    P2->DIR |= BIT2;
-
-    // Turn off LED
-    P2->OUT &= ~BIT2;
-}
-
-/******************************************************************************
-* Tasked used to blink RGB blue on MSP432 Launchpad
-******************************************************************************/
-void Task_Blink_RGB_Blue(void *pvParameters)
-{
-    while(1)
-    {
-        // turn on the LED
-        P2->OUT |= BIT2;
-
-        // Delay
-        vTaskDelay(pdMS_TO_TICKS(DELAY_MS));
-
-        // turn off the LED
-        P2->OUT &= ~BIT2;
-
-        // Delay
-        vTaskDelay(pdMS_TO_TICKS(DELAY_MS));
-    }
-}
+ QueueHandle_t Queue_Task1;
+ QueueHandle_t Queue_Task2;
 
 
 /*
@@ -123,28 +45,34 @@ void Task_Blink_RGB_Blue(void *pvParameters)
 int main(void)
 {
     WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;     // stop watchdog timer
+    ece353_staff_init(true);
 
-    blink_led1_hw_init();
-    blink_rgb_blue_hw_init();
+    printf("\n\r");
+    printf("*********************************************\n\r");
+    printf("* Ex-15-Queues\n\r");
+    printf("*********************************************\n\r");
+    printf("\n\r");
+
+    Queue_Task1= xQueueCreate(1,sizeof(uint8_t));
+    Queue_Task2= xQueueCreate(1,sizeof(uint8_t));
 
     xTaskCreate
-    (   Task_Blink_LED1,
-        "LED1 Blink Task",
+    (   Task1,
+        "Task_1",
         configMINIMAL_STACK_SIZE,
         NULL,
         1,
-        &Task_Blink_LED1_Handle
+        NULL
     );
 
     xTaskCreate
-    (   Task_Blink_RGB_Blue,
-        "RGB Blue Blink Task",
-        configMINIMAL_STACK_SIZE,
-        NULL,
-        1,
-        &Task_Blink_RGB_Blue_Handle
-    );
-
+     (   Task2,
+         "Task_2",
+         configMINIMAL_STACK_SIZE,
+         NULL,
+         1,
+         NULL
+     );
 
     /* Start the FreeRTOS scheduler */
     vTaskStartScheduler();
