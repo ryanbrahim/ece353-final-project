@@ -3,9 +3,9 @@
 .metadata/
 *.launches/
 *.settings/
-*/Debug/
-*/targetConfigs/
-*/Release/
+*Debug/
+*targetConfigs/
+*Release/
 RemoteSystemsTempFiles/
 
 *.obj
