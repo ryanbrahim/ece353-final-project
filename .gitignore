@@ -1,8 +1,8 @@
 .jxbrowser/
 .jxbrowser.userdata/
 .metadata/
-*/.launches/
-*/.settings/
+*.launches/
+*.settings/
 */Debug/
 */targetConfigs/
 */Release/
