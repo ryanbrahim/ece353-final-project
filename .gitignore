@@ -20,3 +20,6 @@ makefile
 ryan-almizyed-user-dict.txt
 *.zip
 *.editorconfig
+.ccsproject
+.cproject
+.project
