@@ -5,21 +5,44 @@
  */
 #include "main.h"
 
+char STUDENT1_NAME[]="Almizyed, Ryan";
+char STUDENT2_NAME[]="Akhetova, Sofya";
+
 SemaphoreHandle_t Sem_UART;
+
+/******************************************************************************
+ * Used to print team info
+ *****************************************************************************/
+void final_proj_print_team_info(void)
+{
+    /* \x1b[2J\x1b[;H - ANSI ESC sequence for clear screen */
+    printf("\x1b[2J\x1b[;H");
+    printf("************************************\n\r");
+    printf("* ECE353 Fall 2022\n\r");
+    printf("* %s\n\r",STUDENT1_NAME);
+    printf("* %s\n\r",STUDENT2_NAME);
+    printf("* ");
+    printf(__DATE__);
+    printf(", ");
+    printf(__TIME__);
+    printf("\n\r");
+    printf("* Final Project                     \n\r");
+    printf("************************************\n\r");
+}
 
 /*
  *  ======== main ========
  */
 int main(void)
 {
+    /*
+     * Initialization
+     */
     WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;     // stop watchdog timer
+
     ece353_staff_init(true);
 
-    printf("\n\r");
-    printf("*********************************************\n\r");
-    printf("* ICE-15-Queues\n\r");
-    printf("*********************************************\n\r");
-    printf("\n\r");
+    final_proj_print_team_info();
 
     Sem_UART =  xSemaphoreCreateBinary();
 
