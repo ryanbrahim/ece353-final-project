@@ -1,92 +1,55 @@
-
+/*
+ * Copyright (c) 2016-2019, Texas Instruments Incorporated
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions
+ * are met:
+ *
+ * *  Redistributions of source code must retain the above copyright
+ *    notice, this list of conditions and the following disclaimer.
+ *
+ * *  Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * *  Neither the name of Texas Instruments Incorporated nor the names of
+ *    its contributors may be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+ * PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+ * CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+ * EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+ * PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+ * OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+ * WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+ * OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
+ * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
 
 /*
  *  ======== main_freertos.c ========
  */
 #include "main.h"
 
-char STUDENT1_NAME[]="Almizyed, Ryan";
-char STUDENT2_NAME[]="Akhetova, Sofya";
-
-SemaphoreHandle_t Sem_UART;
-
-/******************************************************************************
- * Used to print team info
- *****************************************************************************/
-void final_proj_print_team_info(void)
-{
-    /* \x1b[2J\x1b[;H - ANSI ESC sequence for clear screen */
-    printf("\x1b[2J\x1b[;H");
-    printf("************************************\n\r");
-    printf("* ECE353 Fall 2022\n\r");
-    printf("* %s\n\r",STUDENT1_NAME);
-    printf("* %s\n\r",STUDENT2_NAME);
-    printf("* ");
-    printf(__DATE__);
-    printf(", ");
-    printf(__TIME__);
-    printf("\n\r");
-    printf("* Final Project                     \n\r");
-    printf("************************************\n\r");
-}
 
 /*
  *  ======== main ========
  */
 int main(void)
 {
-    /*
-     * Initialization
-     */
     WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;     // stop watchdog timer
-
+    //uint32_t test = 2069;
     ece353_staff_init(true);
+    accel_init();
+    ece353_T32_1_Interrupt_Ms(100);
+    __enable_irq();
+while(1){
 
-    final_proj_print_team_info();
-
-    Sem_UART =  xSemaphoreCreateBinary();
-
-    /*
-     *  Initialize Queue_LED so that it is of size 2, and each entry
-     *  is a LED_MSG_t.
-     */
-    Queue_LED = xQueueCreate(2, sizeof(LED_MSG_t));
-
-    // Release print semaphore.
-    xSemaphoreGive(Sem_UART);
-
-    xTaskCreate
-    (   task_mkII_s1,
-        "task_mkII_s1",
-        configMINIMAL_STACK_SIZE,
-        NULL,
-        1,
-        NULL
-    );
-
-    xTaskCreate
-     (   task_mkII_s2,
-         "task_mkII_s2",
-         configMINIMAL_STACK_SIZE,
-         NULL,
-         1,
-         NULL
-     );
-
-    xTaskCreate
-    (   Task_LED,
-        "Task_LED",
-        configMINIMAL_STACK_SIZE,
-        NULL,
-        1,
-        NULL
-    );
-
-
-    /* Start the FreeRTOS scheduler */
-    vTaskStartScheduler();
-
-    while(1){};
+}
     return (0);
 }
 

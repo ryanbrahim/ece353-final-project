@@ -108,7 +108,6 @@ extern void xPortSysTickHandler(void);
 extern void vPortSVCHandler(void);
 extern void xPortPendSVHandler(void);
 
-
 /* Interrupt vector table.  Note that the proper constructs must be placed on this to */
 /* ensure that it ends up at physical address 0x0000.0000 or at the start of          */
 /* the program if located at a start address other than 0.                            */
