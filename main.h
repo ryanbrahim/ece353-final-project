@@ -17,10 +17,12 @@
 /* RTOS header files */
 #include <FreeRTOS.h>
 #include <task.h>
+#include <semphr.h>
 #include "ece353_staff.h"
 #include "functions.h"
 #include "interrupts.h"
 #include "ece353.h"
+#include <task_console.h>
 
 
 

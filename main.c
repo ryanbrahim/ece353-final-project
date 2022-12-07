@@ -47,9 +47,36 @@ int main(void)
     accel_init();
     ece353_T32_1_Interrupt_Ms(100);
     __enable_irq();
-while(1){
+    printf("\n\r");
+        printf("*********************************************\n\r");
+        printf("* FINAL PROJECT\n\r");
+        printf("*********************************************\n\r");
+        printf("\n\r");
+    Queue_Console = xQueueCreate(20,sizeof(uint32_t));
 
-}
+    xTaskCreate
+        (   Task_Console,
+            "Task_Console",
+            configMINIMAL_STACK_SIZE,
+            NULL,
+            1,
+            &Task_Console_Handle
+        );
+
+    xTaskCreate
+        (   Task_Accel_Bottom_Half,
+            "Task_Accel",
+            configMINIMAL_STACK_SIZE,
+            NULL,
+            3,
+            &Task_Accel_Bottom_Half_Handle
+        );
+
+
+   /* Start the FreeRTOS scheduler */
+    vTaskStartScheduler();
+
+    while(1){};
     return (0);
 }
 
