@@ -21,6 +21,8 @@
 #include <task_mkII_s1.h>
 #include <task_mkII_s2.h>
 #include "ece353_staff.h"
+#include <i2c.h>
+#include <opt3001.h>
 
 extern SemaphoreHandle_t Sem_UART;
 
