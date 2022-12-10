@@ -16,6 +16,7 @@ extern int x_pos;
 extern int y_pos;
 extern int sloth_image;
 extern int mood;
+extern uint16_t pwm_freq;
 
 /******************************************************************************
 * Task used to print out messages to the console

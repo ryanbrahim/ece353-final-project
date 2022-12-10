@@ -27,8 +27,11 @@
 #include "task_console.h"
 #include "task_mkII_s1.h"
 #include "task_mkII_s2.h"
+#include "buzzer.h"
 
 
+/* USER SETTINGS */
+#define PWM_FREQ    3000
 
 
 #endif /* MAIN_H_ */

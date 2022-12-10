@@ -31,12 +31,18 @@ void task_mkII_s2(void *pvParameters)
         if (ece353_staff_MKII_S2()){
             debounce_state|=1;
         }
+        else if (!ece353_staff_MKII_S1()){
+            ece353_MKII_Buzzer_Off1();//both are off
+        }
         // If the de-bounce variable is equal to 0x7F, change the color of the tri-color LED.
         if (debounce_state == 0x7F){
             if (mood>0){
                 mood--;
                 mood_checker(mood);
+                pwm_freq = (pwm_freq < 200) ? 200 : pwm_freq - 100;
             }
+            ece353_MKII_Buzzer_Set_Freq1(pwm_freq);
+            ece353_MKII_Buzzer_On1();
 //            if (red){
 //                red = false;
 //                green = true;

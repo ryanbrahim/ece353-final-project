@@ -48,6 +48,9 @@ int main(void)
     accel_init();
     // Initialize LCD for spaceship image
     lcd_init();
+    //Timer TA0 shit
+
+    ece353_MKII_Buzzer_Init1(pwm_freq);
     //drawSloath(100,100);
     // Enable interrupts
      __enable_irq();

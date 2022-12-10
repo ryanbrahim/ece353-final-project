@@ -17,6 +17,7 @@ int inc =2;
 
 int sloth_image =2;//start at okay
 int mood = 5;//init mood
+uint16_t pwm_freq = PWM_FREQ/2;
 /******************************************************************************
 * Task used to print out messages to the console
 ******************************************************************************/
