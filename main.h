@@ -21,6 +21,7 @@
 #include <task_mkII_s1.h>
 #include <task_mkII_s2.h>
 #include "ece353_staff.h"
+#include "buzzer.h"
 
 extern SemaphoreHandle_t Sem_UART;
 
