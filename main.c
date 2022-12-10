@@ -41,10 +41,50 @@ int main(void)
     WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;     // stop watchdog timer
 
     ece353_staff_init(true);
+    i2c_init();
 
     final_proj_print_team_info();
 
     Sem_UART =  xSemaphoreCreateBinary();
+
+
+    // testing i2c
+//    printf("\r\nBefore opt3001 init:\r\n");
+//    uint16_t result1 = i2c_read_16(OPT3001_I2C_ADDR, OPT3001_RESULT_REG);
+//    uint16_t config1 = i2c_read_16(OPT3001_I2C_ADDR, OPT3001_CONFIG_REG);
+//    uint16_t low_lim1 = i2c_read_16(OPT3001_I2C_ADDR, OPT3001_LOW_LIM_REG);
+//    uint16_t high_lim1 = i2c_read_16(OPT3001_I2C_ADDR, OPT3001_HIGH_LIM_REG);
+//    uint16_t mfgid1 = i2c_read_16(OPT3001_I2C_ADDR, OPT3001_MFGID_REG);
+//    uint16_t devid1 = i2c_read_16(OPT3001_I2C_ADDR, OPT3001_DEVID_REG);
+//    printf("\tresult = %x\r\n", result1);
+//    printf("\tconfig = %x\r\n", config1);
+//    printf("\tlow_lim = %x\r\n", low_lim1);
+//    printf("\thigh_lim = %x\r\n", high_lim1);
+//    printf("\tmfgid = %x\r\n", mfgid1);
+//    printf("\tdevid = %x\r\n", devid1);
+
+    opt3001_init();
+
+//    printf("\r\nAfter opt3001 init:\r\n");
+//    uint16_t result2;
+//    uint16_t config2;
+//    uint16_t low_lim2;
+//    uint16_t high_lim2;
+//    uint16_t mfgid2;
+//    uint16_t devid2;
+//    printf("\tresult = %x\r\n", result2);
+//    printf("\tconfig = %x\r\n", config2);
+//    printf("\tlow_lim = %x\r\n", low_lim2);
+//    printf("\thigh_lim = %x\r\n", high_lim2);
+//    printf("\tmfgid = %x\r\n", mfgid2);
+//    printf("\tdevid = %x\r\n", devid2);
+
+    float lux;
+    while (1)
+    {
+        lux = opt3001_read_light();
+    }
+
 
     /*
      *  Initialize Queue_LED so that it is of size 2, and each entry
