@@ -16,6 +16,7 @@ RemoteSystemsTempFiles/
 *.mk
 
 ece353-final-project/
+FreeRTOS/
 makefile
 ryan-almizyed-user-dict.txt
 *.zip
