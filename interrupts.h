@@ -17,10 +17,13 @@ extern volatile uint32_t Y_ACCEL;
 extern volatile uint32_t Z_ACCEL;
 
 extern TaskHandle_t Task_Accel_Handle;
+extern TaskHandle_t Task_Accel_Timer_Handle;
 extern TaskHandle_t Task_Accel_Bottom_Half_Handle;
 
-
-void T32_INT1_IRQHandler(void);
+/******************************************************************************
+* Used to start an ADC14 Conversion
+******************************************************************************/
+void Task_Accel_Timer(void *pvParameters);
 
 void ADC14_IRQHandler(void);
 

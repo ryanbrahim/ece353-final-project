@@ -6,7 +6,23 @@
  */
 
 /* global variable declaration */
-#include "interrupts.h"
+#include "functions.h"
+
+
+//active is the on color
+//inactive is the background or off color
+void drawSloath(uint16_t x, uint16_t y, int active, int inactive)
+{
+    lcd_draw_image(
+                    x,
+                    y,
+                    sloathWidthPixels,
+                    sloathHeightPixels,
+                    sloathBitmaps,
+                    active,
+                    inactive
+            );//LCD_COLOR_RED,//LCD_COLOR_BLACK
+}
 
 void adc14_clock(){
     // Configure CTL0 to sample 16-times in pulsed sample mode.

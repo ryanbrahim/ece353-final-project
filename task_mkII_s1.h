@@ -8,7 +8,13 @@
 #ifndef TASK_MKII_S1_H_
 #define TASK_MKII_S1_H_
 
-#include "main.h"
+#include "msp.h"
+#include <stdint.h>
+#include <stdio.h>
+
+/* RTOS header files */
+#include <FreeRTOS.h>
+#include <task.h>
 
 extern TaskHandle_t Task_mkII_s1_Handle;
 

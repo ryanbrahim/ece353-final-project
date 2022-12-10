@@ -43,10 +43,15 @@ int main(void)
 {
     WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;     // stop watchdog timer
     //uint32_t test = 2069;
+    ///INITS///////////////////////////////////////////////////////////////////////////////////////////////////////////
     ece353_staff_init(true);
     accel_init();
-    ece353_T32_1_Interrupt_Ms(100);
-    __enable_irq();
+    // Initialize LCD for spaceship image
+    lcd_init();
+    //drawSloath(100,100);
+    // Enable interrupts
+     __enable_irq();
+    ///INITS///////////////////////////////////////////////////////////////////////////////////
     printf("\n\r");
         printf("*********************************************\n\r");
         printf("* FINAL PROJECT\n\r");
@@ -62,7 +67,14 @@ int main(void)
             1,
             &Task_Console_Handle
         );
-
+    xTaskCreate
+        (   Task_Accel_Timer,
+            "Task_Joystick_Timer",
+            configMINIMAL_STACK_SIZE,
+            NULL,
+            2,
+            &Task_Accel_Timer_Handle
+        );
     xTaskCreate
         (   Task_Accel_Bottom_Half,
             "Task_Accel",
@@ -71,6 +83,23 @@ int main(void)
             3,
             &Task_Accel_Bottom_Half_Handle
         );
+    xTaskCreate
+            (   task_mkII_s1,
+                "task_mkII_s1",
+                configMINIMAL_STACK_SIZE,
+                NULL,
+                1,
+                NULL
+            );
+    xTaskCreate
+            (   task_mkII_s2,
+                "task_mkII_s2",
+                configMINIMAL_STACK_SIZE,
+                NULL,
+                1,
+                NULL
+            );
+
 
 
    /* Start the FreeRTOS scheduler */

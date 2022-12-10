@@ -21,8 +21,12 @@
 #include "ece353_staff.h"
 #include "functions.h"
 #include "interrupts.h"
+#include "image.h"
+#include "lcd.h"
 #include "ece353.h"
-#include <task_console.h>
+#include "task_console.h"
+#include "task_mkII_s1.h"
+#include "task_mkII_s2.h"
 
 
 

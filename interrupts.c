@@ -10,19 +10,35 @@
 #include "msp.h"
 
  TaskHandle_t Task_Accel_Bottom_Half_Handle;
+ TaskHandle_t Task_mkII_s2_Bottom_Half_Handle;
+ TaskHandle_t Task_mkII_s1_Bottom_Half_Handle;
  TaskHandle_t Task_Accel_Timer_Handle;
 
 volatile uint32_t X_ACCEL = 4092/2;
 volatile uint32_t Y_ACCEL = 4092/2;
 volatile uint32_t Z_ACCEL = 4092/2;
 
-void T32_INT1_IRQHandler(void)
-{
-    // Start the ADC conversion
-    ADC14->CTL0 |= ADC14_CTL0_SC|ADC14_CTL0_ENC;
-    // Clear the timer interrupt
-    TIMER32_1->INTCLR = BIT0; //WRITE ANY NUMBER WILL CLEAR IT
 
+
+
+/******************************************************************************
+* Used to start an ADC14 Conversion
+******************************************************************************/
+void Task_Accel_Timer(void *pvParameters)
+{
+    while(1)
+    {
+        /*
+         * Start the ADC conversion
+         */
+        ADC14->CTL0 |= ADC14_CTL0_SC | ADC14_CTL0_ENC;
+
+        /*
+         * Delay 50mS
+         */
+        vTaskDelay(pdMS_TO_TICKS(50));
+
+    }
 }
 void Task_Accel_Bottom_Half(void *pvParameters)
 {
@@ -67,9 +83,9 @@ void Task_Accel_Bottom_Half(void *pvParameters)
          * Send dir to Queue_Console if the the current direction
          * of the joystick does not match the previous direction of the joystick
          */
-        //if (dir!=prev_dir){
+        //if (dir!=ACCEL_CENTER){//don't do anything at center
             xQueueSendToBack(Queue_Console, &dir, portMAX_DELAY);
-        //}
+       // }
         /* ADD CODE
          * Update the prev_dir of the joystick
          */
@@ -87,5 +103,6 @@ void ADC14_IRQHandler(void)
     vTaskNotifyGiveFromISR(Task_Accel_Bottom_Half_Handle, &xHigherPriorityTaskWoken);
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 }
+
 
 
