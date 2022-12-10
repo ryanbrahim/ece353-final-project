@@ -39,12 +39,35 @@ int main(void)
      * Initialization
      */
     WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;     // stop watchdog timer
-
     ece353_staff_init(true);
-
     final_proj_print_team_info();
-
     Sem_UART =  xSemaphoreCreateBinary();
+
+    // test buzzer
+
+    // Configure TimerA0
+    static uint16_t pwm_freq = PWM_FREQ;
+    ece353_MKII_Buzzer_Init(pwm_freq);
+
+
+    while(1)
+    {
+        if(ece353_staff_MKII_S1())    // If SW1 is being pressed, turn the buzzer on
+        {
+            // Only turn the buzzer on if its current status is off
+            if(!ece353_MKII_Buzzer_Run_Status())
+            {
+                pwm_freq = (pwm_freq < 200) ? PWM_FREQ : pwm_freq - 100;
+                ece353_MKII_Buzzer_Set_Freq(pwm_freq);
+                ece353_MKII_Buzzer_On();
+            }
+
+        }
+        else    // SW1 is not pressed, so turn the buzzer off
+            ece353_MKII_Buzzer_Off();
+    }
+
+
 
     /*
      *  Initialize Queue_LED so that it is of size 2, and each entry
