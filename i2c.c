@@ -45,7 +45,7 @@ static __inline void i2c_set_rx_mode(void)
  **********************************************************************************************/
 static __inline void i2c_send_start(void)
 {
-    EUSCI_B1->CTLW0 = EUSCI_B_CTLW0_TXSTT;
+    EUSCI_B1->CTLW0 |= EUSCI_B_CTLW0_TXSTT;
 }
 
 /**********************************************************************************************
@@ -53,7 +53,7 @@ static __inline void i2c_send_start(void)
  **********************************************************************************************/
 static __inline void i2c_send_stop(void)
 {
-    EUSCI_B1->CTLW0 = EUSCI_B_CTLW0_TXSTP;
+    EUSCI_B1->CTLW0 |= EUSCI_B_CTLW0_TXSTP;
 
 }
 
@@ -62,7 +62,7 @@ static __inline void i2c_send_stop(void)
  **********************************************************************************************/
 static __inline void i2c_wait_for_tx(void)
 {
-    while ( EUSCI_B1->IFG & EUSCI_B_IFG_TXIFG != EUSCI_B_IFG_TXIFG) { }
+    while ( (EUSCI_B1->IFG & EUSCI_B_IFG_TXIFG0) != EUSCI_B_IFG_TXIFG0) { }
 }
 
 /**********************************************************************************************
@@ -70,7 +70,7 @@ static __inline void i2c_wait_for_tx(void)
  **********************************************************************************************/
 static __inline void i2c_wait_for_stop(void)
 {
-    while ( EUSCI_B1->IFG & EUSCI_B_IFG_STPIFG != EUSCI_B_IFG_STPIFG ) { }
+    while ( (EUSCI_B1->IFG & EUSCI_B_IFG_STPIFG) != EUSCI_B_IFG_STPIFG ) { }
 }
 
 /**********************************************************************************************
@@ -79,7 +79,7 @@ static __inline void i2c_wait_for_stop(void)
  **********************************************************************************************/
 static __inline uint8_t i2c_wait_for_rx(void)
 {
-    while ( EUSCI_B1->IFG & EUSCI_B_IFG_RXIFG != EUSCI_B_IFG_RXIFG ) { }
+    while ( (EUSCI_B1->IFG & EUSCI_B_IFG_RXIFG0) != EUSCI_B_IFG_RXIFG0 ) { }
     return EUSCI_B1->RXBUF;
 }
 
@@ -88,7 +88,7 @@ static __inline uint8_t i2c_wait_for_rx(void)
  **********************************************************************************************/
 static __inline void i2c_wait_busy(void)
 {
-    while ( EUSCI_B1->STATW & EUSCI_B_STATW_BBUSY == EUSCI_B_STATW_BBUSY ) { }
+    while ( (EUSCI_B1->STATW & EUSCI_B_STATW_BBUSY) == EUSCI_B_STATW_BBUSY ) { }
 }
 
 /**********************************************************************************************
