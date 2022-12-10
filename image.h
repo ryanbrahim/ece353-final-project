@@ -32,6 +32,10 @@ extern const uint8_t sadSloth_monoBitmaps[];
 extern const uint8_t  sadSloth_monoWidthPixels;
 extern const uint8_t  sadSloth_monoHeightPixels;
 
+// Bitmap info for sleepy_Sloth_mono
+extern const uint8_t sleepy_Sloth_monoBitmaps;
+extern const uint8_t sleepy_Sloth_monoWidthPixels;
+extern const uint8_t sleepy_Sloth_monoHeightPixels;
 
 
 #endif /* IMAGE_H_ */

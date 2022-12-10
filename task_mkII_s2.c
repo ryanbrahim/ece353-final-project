@@ -20,9 +20,6 @@ void task_mkII_s2(void *pvParameters)
 {
     // Declare a uint8_t variable that will be used to de-bounce S2
     uint8_t debounce_state = 0x00;
-    bool red = true;
-    bool green = false;
-    bool blue = false;
 
     while(1)
     {
@@ -40,21 +37,21 @@ void task_mkII_s2(void *pvParameters)
                 mood--;
                 mood_checker(mood);
             }
-            if (red){
-                red = false;
-                green = true;
-                blue = false;
-            }
-            else if(green){
-                red = false;
-                green = false;
-                blue = true;
-            }
-            else if(blue){
-                red = true;
-                green = false;
-                blue = false;
-            }
+//            if (red){
+//                red = false;
+//                green = true;
+//                blue = false;
+//            }
+//            else if(green){
+//                red = false;
+//                green = false;
+//                blue = true;
+//            }
+//            else if(blue){
+//                red = true;
+//                green = false;
+//                blue = false;
+//            }
             ece353_staff_MKII_RGB_LED(red, green, blue);
         }
         // Delay for 10mS using vTaskDelay

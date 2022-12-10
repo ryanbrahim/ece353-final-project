@@ -14,6 +14,7 @@
 /* RTOS header files */
 #include <FreeRTOS.h>
 #include <task.h>
+#include "main.h"
 
 extern TaskHandle_t Task_mkII_s2_Handle;
 

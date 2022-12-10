@@ -51,6 +51,7 @@ int main(void)
     //drawSloath(100,100);
     // Enable interrupts
      __enable_irq();
+     ece353_staff_MKII_RGB_LED(red, green, blue);
     ///INITS///////////////////////////////////////////////////////////////////////////////////
     printf("\n\r");
         printf("*********************************************\n\r");

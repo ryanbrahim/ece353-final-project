@@ -11,15 +11,27 @@
 void mood_checker(int mood){
     if (mood>8){
         sloth_image = 3;//happy
+        red = false;
+        green = true;
+        blue = false;
     }
     else if (mood>3){
         sloth_image = 2;//ok
+        red = true;
+        green = true;
+        blue = false;
     }
     else if (mood>0){
         sloth_image = 1;//sad
+        red = false;
+        green = false;
+        blue = true;
     }
     else{
         sloth_image = 0;//dead
+        red = true;
+        green = false;
+        blue = false;
     }
 }
 //active is the on color

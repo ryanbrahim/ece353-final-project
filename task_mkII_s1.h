@@ -15,6 +15,11 @@
 /* RTOS header files */
 #include <FreeRTOS.h>
 #include <task.h>
+#include "main.h"
+extern bool red;
+extern bool blue;
+extern bool green;
+
 
 extern TaskHandle_t Task_mkII_s1_Handle;
 

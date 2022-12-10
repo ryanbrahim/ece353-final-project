@@ -8,7 +8,9 @@
 #include "main.h"
 #include "ece353_staff.h"
 TaskHandle_t Task_mkII_s1_Handle = NULL;
-
+bool red = true;
+bool green = true;
+bool blue = false;
 /******************************************************************************
  * De-bounce switch S1.  If is has been pressed, change the tri-Color LED on
  * the MSP432 Launchpad. Everytime S1 is pressed, the color should change in
@@ -19,9 +21,7 @@ void task_mkII_s1(void *pvParameters)
 {
     // Declare a uint8_t variable that will be used to de-bounce S1
     uint8_t debounce_state = 0x00;
-    bool red = true;
-    bool green = false;
-    bool blue = false;
+
 
     while(1)
     {
@@ -39,22 +39,23 @@ void task_mkII_s1(void *pvParameters)
                         mood++;
                         mood_checker(mood);
                     }
-                    if (red){
-                        red = false;
-                        green = true;
-                        blue = false;
-                    }
-                    else if(green){
-                        red = false;
-                        green = false;
-                        blue = true;
-                    }
-                    else if(blue){
-                        red = true;
-                        green = false;
-                        blue = false;
-                    }
-                    ece353_staff_RGB_LED(red, green, blue);
+//                    if (red){
+//                        red = false;
+//                        green = true;
+//                        blue = false;
+//                    }
+//                    else if(green){
+//                        red = false;
+//                        green = false;
+//                        blue = true;
+//                    }
+//                    else if(blue){
+//                        red = true;
+//                        green = false;
+//                        blue = false;
+//                    }
+                    ece353_staff_MKII_RGB_LED(red, green, blue);
+                    //ece353_staff_RGB_LED(red, green, blue);
                 }
         // Delay for 10mS using vTaskDelay
         vTaskDelay(pdMS_TO_TICKS(10));
