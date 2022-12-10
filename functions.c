@@ -8,17 +8,30 @@
 /* global variable declaration */
 #include "functions.h"
 
-
+void mood_checker(int mood){
+    if (mood>8){
+        sloth_image = 3;//happy
+    }
+    else if (mood>3){
+        sloth_image = 2;//ok
+    }
+    else if (mood>0){
+        sloth_image = 1;//sad
+    }
+    else{
+        sloth_image = 0;//dead
+    }
+}
 //active is the on color
 //inactive is the background or off color
-void drawSloath(uint16_t x, uint16_t y, int active, int inactive)
+void drawSloath(uint16_t x, uint16_t y, uint8_t width, uint8_t height, const uint8_t bitmap[],  int active, int inactive)
 {
     lcd_draw_image(
                     x,
                     y,
-                    sloathWidthPixels,
-                    sloathHeightPixels,
-                    sloathBitmaps,
+                    width,
+                    height,
+                    bitmap,
                     active,
                     inactive
             );//LCD_COLOR_RED,//LCD_COLOR_BLACK

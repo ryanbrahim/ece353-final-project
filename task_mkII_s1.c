@@ -22,6 +22,7 @@ void task_mkII_s1(void *pvParameters)
     bool red = true;
     bool green = false;
     bool blue = false;
+
     while(1)
     {
 
@@ -34,6 +35,10 @@ void task_mkII_s1(void *pvParameters)
         }
         // If the de-bounce variable is equal to 0x7F, change the color of the tri-color LED.
         if (debounce_state == 0x7F){
+                    if (mood<10){
+                        mood++;
+                        mood_checker(mood);
+                    }
                     if (red){
                         red = false;
                         green = true;

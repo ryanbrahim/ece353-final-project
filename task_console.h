@@ -12,6 +12,10 @@
 
 extern QueueHandle_t Queue_Console;
 extern TaskHandle_t Task_Console_Handle;
+extern int x_pos;
+extern int y_pos;
+extern int sloth_image;
+extern int mood;
 
 /******************************************************************************
 * Task used to print out messages to the console
