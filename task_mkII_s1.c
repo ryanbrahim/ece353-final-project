@@ -5,87 +5,67 @@
  *      Author: Joe Krachey
  */
 
-#include "task_mkII_s1.h"
-
+#include "main.h"
+#include "ece353_staff.h"
 TaskHandle_t Task_mkII_s1_Handle = NULL;
-
-
-/******************************************************************************
- * De-bounce switch S1.
- *****************************************************************************/
-bool debounce_s1(void)
-{
-    static uint8_t debounce_state = 0x00;
-
-    // Shift the de-bounce variable to the left
-    debounce_state = debounce_state << 1;
-
-    // If S1 is being pressed, set the LSBit of debounce_state to a 1;
-    if(ece353_staff_MKII_S1())
-    {
-        debounce_state |= 0x01;
-    }
-
-    // If the de-bounce variable is equal to 0x7F, change the color of the tri-color LED.
-    if(debounce_state == 0x7F)
-    {
-        return true;
-    }
-    else
-    {
-        return false;
-    }
-
-}
+bool red = true;
+bool green = true;
+bool blue = false;
 
 /******************************************************************************
  * De-bounce switch S1.  If is has been pressed, change the tri-Color LED on
- * the MKIIEDU . Every time S1 is pressed, the color should change in
+ * the MSP432 Launchpad. Everytime S1 is pressed, the color should change in
  * the following order:
  *      RED->GREEN->BLUE->RED->GREEN....
  *****************************************************************************/
 void task_mkII_s1(void *pvParameters)
 {
-    LED_MSG_t msg;
-    LED_COLOR led_color = LED_BLUE;
+    // Declare a uint8_t variable that will be used to de-bounce S1
+    uint8_t debounce_state = 0x00;
+
 
     while(1)
     {
 
-        if(debounce_s1())
-        {
-            led_color = (LED_COLOR)(((uint8_t)led_color + 1) % 3);
+        // Shift the de-bounce variable to the left 
+        debounce_state = debounce_state<<1;
 
-            /*
-             * Take Sem_UART
-             */
-            xSemaphoreTake(Sem_UART, portMAX_DELAY);
-
-            printf("Button S1 has been pressed\n\r");
-
-            /*
-             * Give Sem_UART
-             */
-            xSemaphoreGive(Sem_UART);
-
-            /*
-             * Use the variable msg to :
-             *      Set the location of the LED as the MKIIEDU.
-             *
-             *      The color of the led is determined by the value
-             *      in led_color.
-             *
-             */
-            msg.color = led_color;
-            msg.led_location = MKIIEDU;
-
-            /*
-             * Send msg to Queue_LED
-             */
-            xQueueSend(Queue_LED, &msg, portMAX_DELAY);
-
+        // If S1 is being pressed, set the LSBit of debounce_state to a 1;
+        if (ece353_staff_MKII_S1()){
+            debounce_state|=1;
         }
+        else if (!ece353_staff_MKII_S2()){
+            ece353_MKII_Buzzer_Off1();
+        }
+        // If the de-bounce variable is equal to 0x7F, change the color of the tri-color LED.
+        if (debounce_state == 0x7F){
+                    if (mood<10){
+                        mood++;
+                        mood_checker(mood);
+                        pwm_freq = (pwm_freq > PWM_FREQ) ? PWM_FREQ : pwm_freq + 100;
+                    }
 
+                    ece353_MKII_Buzzer_Set_Freq1(pwm_freq);
+                    ece353_MKII_Buzzer_On1();
+//                    if (red){
+//                        red = false;
+//                        green = true;
+//                        blue = false;
+//                    }
+//                    else if(green){
+//                        red = false;
+//                        green = false;
+//                        blue = true;
+//                    }
+//                    else if(blue){
+//                        red = true;
+//                        green = false;
+//                        blue = false;
+//                    }
+                    ece353_staff_MKII_RGB_LED(red, green, blue);
+                    //ece353_staff_RGB_LED(red, green, blue);
+                }
+        //ece353_MKII_Buzzer_Off1();
         // Delay for 10mS using vTaskDelay
         vTaskDelay(pdMS_TO_TICKS(10));
     }
