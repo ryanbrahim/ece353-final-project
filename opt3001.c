@@ -8,6 +8,9 @@
 #include "main.h"
 #include <math.h>
 
+bool ALERT_LIGHT_LOW = false;
+bool ALERT_LIGHT_HIGH = false;
+
 
 /* INTERNAL FUNCTIONS */
 
@@ -97,6 +100,29 @@ float opt3001_read_light(void)
     return lux;
 }
 
+
+/******************************************************************************
+ * FreeRTOS task to monitor light level
+ ******************************************************************************/
+void task_light_monitor(void *pvParameters)
+{
+    // Get a new light sensor reading
+    uint16_t light_level = opt3001_read_light();
+
+    // Check light limits
+    ALERT_LIGHT_LOW = (light_level <= OPT3001_LOW_LIM_LUX) ? true : false;
+    ALERT_LIGHT_HIGH = (light_level >= OPT3001_HIGH_LIM_LUX) ? true : false;
+
+    xSemaphoreTake(Sem_UART, portMAX_DELAY);
+    if (ALERT_LIGHT_LOW) { printf("LOW LIGHT\n"); }
+    if (ALERT_LIGHT_HIGH) { printf("HIGH LIGHT\n"); }
+    xSemaphoreGive(Sem_UART);
+
+    // Go to sleep in FreeRTOS before starting again
+    vTaskDelay(pdMS_TO_TICKS(10));
+}
+
+
 /* IRQ HANDLER */
 void PORT4_IRQHandler()
 {
@@ -104,8 +130,6 @@ void PORT4_IRQHandler()
     // Clear pending interrupt
     OPT3001_INT_PORT->IFG &= ~OPT3001_INT_PIN;
 }
-
-
 
 
 

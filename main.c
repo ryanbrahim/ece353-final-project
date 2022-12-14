@@ -79,12 +79,6 @@ int main(void)
 //    printf("\tmfgid = %x\r\n", mfgid2);
 //    printf("\tdevid = %x\r\n", devid2);
 
-    float lux;
-    while (1)
-    {
-        lux = opt3001_read_light();
-    }
-
 
     /*
      *  Initialize Queue_LED so that it is of size 2, and each entry
@@ -94,6 +88,15 @@ int main(void)
 
     // Release print semaphore.
     xSemaphoreGive(Sem_UART);
+
+    xTaskCreate
+    (   task_light_monitor,
+        "task_light_monitor",
+        configMINIMAL_STACK_SIZE,
+        NULL,
+        1,
+        NULL
+    );
 
     xTaskCreate
     (   task_mkII_s1,

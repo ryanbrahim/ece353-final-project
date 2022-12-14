@@ -13,6 +13,10 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+/* GLOBAL ALERT VARIABLES */
+extern bool ALERT_LIGHT_LOW;
+extern bool ALERT_LIGHT_HIGH;
+
 /* USER DEFINED SETTINGS */
 #define OPT3001_RN_EXP              0x5
 #define OPT3001_LOW_LIM_LUX         50
@@ -86,5 +90,11 @@ void opt3001_init(void);
  * Returns the current temperature in degrees C.
  ******************************************************************************/
 float opt3001_read_light(void);
+
+/******************************************************************************
+ * FreeRTOS task to monitor light level
+ ******************************************************************************/
+void task_light_monitor(void *pvParameters)
+
 
 #endif /* OPT3001_H_ */
