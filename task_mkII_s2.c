@@ -6,7 +6,7 @@
  */
 
 #include "main.h"
-#include "ece353_staff.h"
+#include "task_mkII_s2.h"
 
 TaskHandle_t Task_mkII_s2_Handle = NULL;
 
@@ -28,14 +28,14 @@ void task_mkII_s2(void *pvParameters)
         debounce_state = debounce_state<<1;
 
         // If S2 is being pressed, set the LSBit of debounce_state to a 1;
-        if (ece353_staff_MKII_S2()){
+        if (ece353_MKII_S2()){
             debounce_state|=1;
         }
-        else if (!ece353_staff_MKII_S1()){
-            ece353_MKII_Buzzer_Off1();//both are off
+        else if (!ece353_MKII_S1()){
+           ece353_MKII_Buzzer_Off1();//both are off
         }
         // If the de-bounce variable is equal to 0x7F, change the color of the tri-color LED.
-        if (debounce_state == 0x7F){
+        if ((debounce_state == 0x7F)&&(!ALERT_LIGHT_LOW)){
             if (mood>0){
                 mood--;
                 mood_checker(mood);
@@ -58,7 +58,7 @@ void task_mkII_s2(void *pvParameters)
 //                green = false;
 //                blue = false;
 //            }
-            ece353_staff_MKII_RGB_LED(red, green, blue);
+            ece353_MKII_RGB_LED(red, green, blue);
         }
         // Delay for 10mS using vTaskDelay
         vTaskDelay(pdMS_TO_TICKS(10));

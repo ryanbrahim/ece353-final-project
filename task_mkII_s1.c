@@ -6,7 +6,7 @@
  */
 
 #include "main.h"
-#include "ece353_staff.h"
+#include "task_mkII_s1.h"
 TaskHandle_t Task_mkII_s1_Handle = NULL;
 bool red = true;
 bool green = true;
@@ -15,7 +15,7 @@ bool blue = false;
 /******************************************************************************
  * De-bounce switch S1.  If is has been pressed, change the tri-Color LED on
  * the MSP432 Launchpad. Everytime S1 is pressed, the color should change in
- * the following order:
+// * the following order:
  *      RED->GREEN->BLUE->RED->GREEN....
  *****************************************************************************/
 void task_mkII_s1(void *pvParameters)
@@ -31,14 +31,14 @@ void task_mkII_s1(void *pvParameters)
         debounce_state = debounce_state<<1;
 
         // If S1 is being pressed, set the LSBit of debounce_state to a 1;
-        if (ece353_staff_MKII_S1()){
+        if (ece353_MKII_S1()){
             debounce_state|=1;
         }
-        else if (!ece353_staff_MKII_S2()){
+        else if (!ece353_MKII_S2()){
             ece353_MKII_Buzzer_Off1();
         }
         // If the de-bounce variable is equal to 0x7F, change the color of the tri-color LED.
-        if (debounce_state == 0x7F){
+        if ((debounce_state == 0x7F)&&(!ALERT_LIGHT_LOW)){
                     if (mood<10){
                         mood++;
                         mood_checker(mood);
@@ -62,7 +62,7 @@ void task_mkII_s1(void *pvParameters)
 //                        green = false;
 //                        blue = false;
 //                    }
-                    ece353_staff_MKII_RGB_LED(red, green, blue);
+                    ece353_MKII_RGB_LED(red, green, blue);
                     //ece353_staff_RGB_LED(red, green, blue);
                 }
         //ece353_MKII_Buzzer_Off1();

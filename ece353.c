@@ -497,23 +497,7 @@ void PORT5_IRQHandler(void)
     reg_val = P5->IV;
 
 }
-void ece353_T32_1_Interrupt_Ms(uint16_t ms){
-    //ticks - = desired period/ core clock period
-    //uint32_t ticks_n = SystemCoreClock*ms/(1000-1)//pay attention to order
-    //stop the timer
-    TIMER32_1->CONTROL = 0;
 
-    //SET THE LOAD REGISTER
-    TIMER32_1->LOAD= SystemCoreClock*ms/1000-1;
-
-    //enable the timer32 interrupt in nvic
-    //_enable_irq();//NVIC TURN ON
-    NVIC_EnableIRQ(T32_INT1_IRQn);//NUMS DFINED IN A GIVEN FILE LIB
-    NVIC_SetPriority(T32_INT1_IRQn,0);
-
-    //start timer32 and enable interrupt
-    TIMER32_1->CONTROL = TIMER32_CONTROL_ENABLE | TIMER32_CONTROL_MODE|TIMER32_CONTROL_SIZE|TIMER32_CONTROL_IE; //TIMER ON, PERIODIC,32 BIT TIMER, ENABLE INTERRUPT(PERIPHERALLY)
-}
 
 //*****************************************************************************
 //*****************************************************************************

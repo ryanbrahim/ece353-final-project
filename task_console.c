@@ -4,7 +4,7 @@
  *  Created on: Oct 21, 2020
  *      Author: Joe Krachey
  */
-#include <main.h>
+#include "main.h"
 
 QueueHandle_t Queue_Console;
 TaskHandle_t Task_Console_Handle;
@@ -76,9 +76,20 @@ void Task_Console(void *pvParameters)
                 break;
             }
 
+
         }
 
+        if (ALERT_LIGHT_LOW){
+                    width = sleepy_Sloth_monoWidthPixels;
+                    height = sleepy_Sloth_monoHeightPixels;
+                    bitmap = sleepy_Sloth_monoBitmaps;
+                    drawSloath(x_pos,y_pos, width, height, bitmap,LCD_COLOR_BLUE, LCD_COLOR_BLACK);
+                    continue;
+                }
 
+                else {
+                    drawSloath(x_pos,y_pos, width, height, bitmap,LCD_COLOR_RED, LCD_COLOR_BLACK);
+                }
 
 
 
@@ -88,7 +99,7 @@ void Task_Console(void *pvParameters)
             {
                 printf( "Task_Console: Accel position - DOWN\n\r");
                 if((y_pos+inc)<(ymax-height/2)){
-                    drawSloath(x_pos,y_pos,width, height, bitmap, LCD_COLOR_BLACK,LCD_COLOR_BLACK);
+                    //drawSloath(x_pos,y_pos,width, height, bitmap, LCD_COLOR_BLACK,LCD_COLOR_BLACK);
                     y_pos+=inc;
                     drawSloath(x_pos,y_pos,width, height, bitmap, LCD_COLOR_RED, LCD_COLOR_BLACK);
                 }
@@ -98,7 +109,7 @@ void Task_Console(void *pvParameters)
             {
                 printf( "Task_Console: Accel position - UP\n\r");
                 if((y_pos-inc)>(height/2)){
-                    drawSloath(x_pos,y_pos, width, height, bitmap,LCD_COLOR_BLACK,LCD_COLOR_BLACK);
+                    //drawSloath(x_pos,y_pos, width, height, bitmap,LCD_COLOR_BLACK,LCD_COLOR_BLACK);
                     y_pos-=inc;
                     drawSloath(x_pos,y_pos,width, height, bitmap, LCD_COLOR_RED, LCD_COLOR_BLACK);
                }
@@ -108,7 +119,7 @@ void Task_Console(void *pvParameters)
             {
                 printf( "Task_Console: Accel position - RIGHT\n\r");
                 if((x_pos+inc)<(xmax-width/2)){
-                    drawSloath(x_pos,y_pos, width, height, bitmap,LCD_COLOR_BLACK,LCD_COLOR_BLACK);
+                    //drawSloath(x_pos,y_pos, width, height, bitmap,LCD_COLOR_BLACK,LCD_COLOR_BLACK);
                     x_pos+=inc;
                     drawSloath(x_pos,y_pos,width, height, bitmap, LCD_COLOR_RED, LCD_COLOR_BLACK);
                 }
@@ -118,7 +129,7 @@ void Task_Console(void *pvParameters)
             {
                 printf( "Task_Console: Accel position - LEFT\n\r");
                 if((x_pos-inc)>(width/2)){
-                    drawSloath(x_pos,y_pos,width, height, bitmap,LCD_COLOR_BLACK,LCD_COLOR_BLACK);
+                   // drawSloath(x_pos,y_pos,width, height, bitmap,LCD_COLOR_BLACK,LCD_COLOR_BLACK);
                     x_pos-=inc;
                     drawSloath(x_pos,y_pos, width, height, bitmap,LCD_COLOR_RED, LCD_COLOR_BLACK);
                 }
@@ -131,6 +142,7 @@ void Task_Console(void *pvParameters)
                 break;
             }
         }
+        //vTaskDelay(pdMS_TO_TICKS(50));
 
     }
 }

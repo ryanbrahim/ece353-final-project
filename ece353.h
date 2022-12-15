@@ -1,4 +1,5 @@
 #include "msp.h"
+#include "main.h"
 #include <stdint.h>
 #include <stdbool.h>
 #ifndef __ECE353_H__

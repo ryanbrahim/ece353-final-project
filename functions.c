@@ -77,6 +77,7 @@ void adc14_clock(){
     // coding video.
         // Enable ADC Interrupt in the NVIC
         NVIC_EnableIRQ(ADC14_IRQn);
+        NVIC_SetPriority(ADC14_IRQn, 2);
         // Turn ADC ON
         ADC14->CTL0|= ADC14_CTL0_ON;
 }

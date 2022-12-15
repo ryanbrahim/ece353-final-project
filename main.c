@@ -32,9 +32,11 @@
 
 /*
  *  ======== main_freertos.c ========
+ *      Author: Sofya Akhetova
+ *      Author: Ryan Almizyed
  */
 #include "main.h"
-
+SemaphoreHandle_t Sem_UART;
 
 /*
  *  ======== main ========
@@ -44,17 +46,27 @@ int main(void)
     WDT_A->CTL = WDT_A_CTL_PW | WDT_A_CTL_HOLD;     // stop watchdog timer
     //uint32_t test = 2069;
     ///INITS///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ece353_staff_init(true);
+    //ece353_staff_init(true);
+    ece353_MKII_RGB_IO_Init(false);
+    ece353_MKII_S1_Init();
+    ece353_MKII_S2_Init();
+    serial_debug_init();
+    //printf("Wnet through\n");
+    //while (1){}
     accel_init();
     // Initialize LCD for spaceship image
     lcd_init();
     //Timer TA0 shit
+    // Light sensor shit
+    i2c_init();
+    uint16_t mfgid = i2c_read_16(OPT3001_I2C_ADDR, OPT3001_MFGID_REG);
+    opt3001_init();
 
     ece353_MKII_Buzzer_Init1(pwm_freq);
     //drawSloath(100,100);
     // Enable interrupts
      __enable_irq();
-     ece353_staff_MKII_RGB_LED(red, green, blue);
+     ece353_MKII_RGB_LED(red, green, blue);
     ///INITS///////////////////////////////////////////////////////////////////////////////////
     printf("\n\r");
         printf("*********************************************\n\r");
@@ -62,7 +74,16 @@ int main(void)
         printf("*********************************************\n\r");
         printf("\n\r");
     Queue_Console = xQueueCreate(20,sizeof(uint32_t));
+    Sem_UART =  xSemaphoreCreateBinary();
 
+    xTaskCreate
+        (   task_light_monitor,
+            "task_light_monitor",
+            configMINIMAL_STACK_SIZE,
+            NULL,
+            1,
+            &task_light_monitor_handle
+        );
     xTaskCreate
         (   Task_Console,
             "Task_Console",
